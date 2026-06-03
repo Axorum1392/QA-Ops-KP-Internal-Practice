@@ -1,26 +1,62 @@
 name: Simulacion de Pruebas en PR
 
-# Se dispara únicamente cuando se abre o actualiza un PR hacia la rama main
 on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  run-tests:
+  # --- PRIMER CHECK ---
+  pruebas-base-datos:
+    name: "Check 1: Conectividad y Acceso"
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Descarga el código del repositorio en el contenedor de GitHub
       - name: Checkout del código
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      # 2. Configura el entorno de Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-node-version: '18'
+          node-version: '18'
 
-      # 3. Ejecuta nuestro script simulado
-      - name: Ejecutar script de pruebas automáticas
-        run: node simulated-tests.js
+      - name: Ejecutar Bloque 1
+        run: node ${{ github.workspace }}/automated_Omega.js bloque1
+
+  # --- SEGUNDO CHECK (Falla controlada) ---
+  pruebas-rendimiento-api:
+    name: "Check 2: Performance de API"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Ejecutar Bloque 2
+        run: node ${{ github.workspace }}/automated_Omega.js bloque2
+
+  # --- TERCER CHECK ---
+  pruebas-archivos-media:
+    name: "Check 3: Integridad de Archivos"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Ejecutar Bloque 3
+        run: node ${{ github.workspace }}/automated_Omega.js bloque3
