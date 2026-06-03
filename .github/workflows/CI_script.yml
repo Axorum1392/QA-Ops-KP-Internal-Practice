@@ -23,4 +23,4 @@ jobs:
 
       # 3. Ejecuta nuestro script simulado
       - name: Ejecutar script de pruebas automáticas
-        run: node simulated-tests.js
+        run: node automated_Omega.js
