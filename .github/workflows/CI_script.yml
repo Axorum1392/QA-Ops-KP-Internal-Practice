@@ -1,0 +1,26 @@
+name: Simulacion de Pruebas en PR
+
+# Se dispara únicamente cuando se abre o actualiza un PR hacia la rama main
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descarga el código del repositorio en el contenedor de GitHub
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 2. Configura el entorno de Node.js
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-node-version: '18'
+
+      # 3. Ejecuta nuestro script simulado
+      - name: Ejecutar script de pruebas automáticas
+        run: node simulated-tests.js
